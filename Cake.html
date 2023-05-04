@@ -50,6 +50,7 @@ var cake = undefined;
 async function disconnect() {
   if (cake != undefined) {
     cake.close();
+    result.innerText = "";
   }
 }
 
@@ -83,10 +84,10 @@ async function send(v) {
     </script>
     <p><button onclick="fetch()">Fetch</button><span id="result"/></p>
     <p><button onclick="send(command.value)">Send</button><input id="command" type="text"/></p>
-    <p><button onclick="send('faster')">Faster</p>
-    <p><button onclick="send('slower')">Slower</p>
-    <p><button onclick="send('rate:' + speed.value)">Speed<input id="speed" type="number"/></p>
-    <p><button onclick="send('tune:' + tune.value)">Song<input id="tune" type="number"/></p>
+    <p><button onclick="send('faster')">Faster</button></p>
+    <p><button onclick="send('slower')">Slower</button></p>
+    <p><button onclick="send('rate:' + speed.value)">Speed</button><input id="speed" type="number"/></p>
+    <p><button onclick="send('tune:' + tune.value)">Song</button><input id="tune" type="number"/></p>
     <p><button onclick="disconnect()">Logout</button></p>
   </body>
 </html>
