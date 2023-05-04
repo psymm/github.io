@@ -21,9 +21,6 @@ async function getCake() {
         }
     }
 
-    svr = await cake.gatt.connect();
-    svc = await svr.getPrimaryService('a64a814d-8015-4e79-a6a1-163747a56170');
-
     return {
         fetch: async function() {
             var decoder = new TextDecoder('utf-8');
@@ -48,22 +45,48 @@ async function getCake() {
     };
 }    
 
-async function fetch() {
-  var c = await getCake();
-  var v = await c.fetch();
-  await c.close();
-  result.innerText = v;
+var cake = undefined;
+
+async function disconnect() {
+  if (cake != undefined) {
+    cake.close();
+  }
 }
 
-async function send() {
-  var v = command.value;
-  var c = await getCake();
-  await c.update(v);
-  await c.close();
+async function fetch() {
+  try {
+    if (cake == undefined) {
+      cake = await getCake();
+    }
+    var v = await cake.fetch();
+    await c.close();
+    result.innerText = v;
+  }
+  catch (e) {
+    result.innerText = e.message;
+  }
+}
+
+async function send(v) {
+  try {
+    if (cake == undefined) {
+      cake = await getCake();
+    }
+    await cake.update(v);
+    await fetch();
+  }
+  catch (e) {
+    result.innerText = e.message;
+  }
 }
 
     </script>
     <p><button onclick="fetch()">Fetch</button><span id="result"/></p>
-    <p><button onclick="send()">Send</button><input id="command" type="text"/></p>
+    <p><button onclick="send(command.value)">Send</button><input id="command" type="text"/></p>
+    <p><button onclick="send('faster')">Faster</p>
+    <p><button onclick="send('slower')">Slower</p>
+    <p><button onclick="send('rate:' + speed.value)">Speed<input id="speed" type="number"/></p>
+    <p><button onclick="send('tune:' + tune.value)">Song<input id="tune" type="number"/></p>
+    <p><button onclick="disconnect()">Logout</button></p>
   </body>
 </html>
