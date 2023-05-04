@@ -46,6 +46,7 @@ async function getCake() {
 }    
 
 var cake = undefined;
+var busy = false;
 
 async function disconnect() {
   if (cake != undefined) {
@@ -55,30 +56,40 @@ async function disconnect() {
 }
 
 async function fetch() {
-  try {
-    if (cake == undefined) {
-      cake = await getCake();
+  if (!busy) {
+    try {
+      busy = true;
+      result.innerText = "working...";
+      if (cake == undefined) {
+        cake = await getCake();
+      }
+      var v = await cake.fetch();
+      result.innerText = v;
     }
-    var v = await cake.fetch();
-    await c.close();
-    result.innerText = v;
-  }
-  catch (e) {
-    result.innerText = e.message;
+    catch (e) {
+      result.innerText = e.message;
+    }
+    busy = false;
   }
 }
 
 async function send(v) {
-  try {
-    if (cake == undefined) {
-      cake = await getCake();
+  if (!busy) {
+    busy = true;
+    result.innerText = "working...";
+    try {
+      if (cake == undefined) {
+        cake = await getCake();
+      }
+      await cake.update(v);
+      busy = false;
+      await fetch();
     }
-    await cake.update(v);
-    await fetch();
+    catch (e) {
+      result.innerText = e.message;
+    }
   }
-  catch (e) {
-    result.innerText = e.message;
-  }
+  busy = false;
 }
 
     </script>
