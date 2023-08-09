@@ -128,8 +128,11 @@ async function ota() {
     <p><button onclick="send('rate:' + speed.value)">Speed</button><input id="speed" type="number"></p>
     <p><button onclick="send('go')">Play</button> <button onclick="send('faster')">Faster</button> <button onclick="send('slower')">Slower</button></p>
     <p><button onclick="send('tune:' + tune.value)">Song</button><input id="tune" type="number"></p>
+    <p><button onclick="send('custom:' + custom.value)">Custom</button><textarea id="custom" rows="5" cols="20">100
+21 22 23 24
+25 26 27 28</textarea></p>
     <p><button onclick="disconnect()">Logout</button> <button onclick="send('off')">Off</button></p>
-<p>OTA <input type="file" id="bin" onchange="ota()"></p>
+    <p>OTA <input type="file" id="bin" onchange="ota()"></p>
   
 
 </body></html>
